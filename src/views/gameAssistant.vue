@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ipcRenderer } from 'electron';
 import { onMounted, ref } from 'vue';
-import { champDict } from '../../core/constant/lolDataList';
+import { champDict, mapNameFromUrl } from '../../core/constant/lolDataList';
 import { request } from '../utils/request';
 
 const showModal = ref(false);
@@ -63,20 +63,23 @@ onMounted(() => {
         }
     });
     ipcRenderer.on('break_pick_champion_flow', () => {
-        showModal.value = false
-    })
+        showModal.value = false;
+    });
 });
 
 // 应用符文
-const applyRune = async data => {
-    //   let tempData = JSON.parse(JSON.stringify(data))
-    //   tempData.name = mapNameFromUrl[data.alias].name + " By Frank"
-    //   const isApplySuccess = await applyRunePage(credentials,JSON.parse(JSON.stringify(tempData)))
-    //   if (isApplySuccess){
-    //     message.success('符文配置成功')
-    //   }else {
-    //     message.error('符文配置失败, 按Ctrl+R 再试试')
-    //   }
+const applyRune = async (data: any) => {
+    let tempData = JSON.parse(JSON.stringify(data));
+    tempData.name = mapNameFromUrl[data.alias].name + ' By Frank';
+    const isApplySuccess = await ipcRenderer.invoke('set_rune_page', {
+        data: JSON.parse(JSON.stringify(tempData))
+    });
+    //   await applyRunePage(credentials,)
+    if (isApplySuccess) {
+        alert('符文配置成功');
+    } else {
+        alert('符文配置失败, 按Ctrl+R 再试试');
+    }
 };
 
 const currentChampionImgUrl = ref(

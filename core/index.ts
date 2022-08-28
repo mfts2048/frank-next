@@ -20,6 +20,10 @@ async function bootstrap(win: BrowserWindow) {
         return await lcuServer.getMatchHistory(summonerId, begIndex, endIndex);
     });
 
+    ipcMain.handle('set_rune_page', async (event, { data }) => {
+        return await lcuServer.setRunePage(data);
+    });
+
     await createWebsocketLcuEvent(win, lcuServer);
 }
 

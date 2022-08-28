@@ -7,6 +7,7 @@ import { getGameStatus } from './methods/getGameStatus';
 import credentialsCore from './utils/credentials';
 import { getEnvironment } from './methods/getEnvironment';
 import { getMatchHistory } from './methods/getMatchHistory';
+import { setRunePage } from './methods/setRunePage';
 // import { translate } from "./translate";
 // import { ChampionMasteryResponse, CurrentSummoner, LolChampSelectV1Session, LolChampSelectV1SessionError, RankedStatusInfo } from "./types";
 // import { getProfileIcon } from "./constant";
@@ -212,8 +213,20 @@ export class LcuServerCore {
         return await getMatchHistory(summonerId, begIndex, endIndex);
     }
 
+    /**
+     *
+     * @returns 根据游戏id获取详细的游戏对局
+     */
     async getGameDetailsByGameId<T>(gameId: string) {
         return await this.http1Request<T>(`/lol-match-history/v1/games/${gameId}`, 'GET');
+    }
+
+    /**
+     *
+     * @returns 设置符文页
+     */
+    async setRunePage(data: any) {
+        return await setRunePage(data);
     }
 
     // lcu http1 request
