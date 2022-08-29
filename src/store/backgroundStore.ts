@@ -14,7 +14,7 @@ export const useBackgroundStore = defineStore({
         };
     },
     actions: {
-        async getCurrentSummoner() {
+        async getCurrentSummoner(): Promise<Partial<CurrentSummoner>> {
             if (this.summoner && this.summoner.summonerId) {
                 return this.summoner;
             } else {

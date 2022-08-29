@@ -8,6 +8,7 @@ import credentialsCore from './utils/credentials';
 import { getEnvironment } from './methods/getEnvironment';
 import { getMatchHistory } from './methods/getMatchHistory';
 import { setRunePage } from './methods/setRunePage';
+import { getProfileSummary } from './methods/getProfileSummary';
 // import { translate } from "./translate";
 // import { ChampionMasteryResponse, CurrentSummoner, LolChampSelectV1Session, LolChampSelectV1SessionError, RankedStatusInfo } from "./types";
 // import { getProfileIcon } from "./constant";
@@ -17,9 +18,9 @@ export async function setupLcuServer() {
     try {
         const credentials = await credentialsCore.init();
         return new LcuServerCore(credentials);
-    } catch(e) {
-        console.log('league client process could not be located')
-        return undefined
+    } catch (e) {
+        console.log('league client process could not be located');
+        return undefined;
     }
 }
 
@@ -228,6 +229,14 @@ export class LcuServerCore {
      */
     async setRunePage(data: any) {
         return await setRunePage(data);
+    }
+
+    /**
+     *
+     * @returns 获取永恒星碑
+     */
+    async getProfileSummary(puuid: string) {
+        return await getProfileSummary(puuid);
     }
 
     // lcu http1 request

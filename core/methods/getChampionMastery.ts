@@ -30,7 +30,7 @@ export async function getChampionMastery(summonerId: string | number) {
     }
 
     response.forEach(item => {
-        item.champImgUrl = `https://game.gtimg.cn/images/lol/act/img/champion/${alias}.png`;
+        item.champImgUrl = `https://game.gtimg.cn/images/lol/act/img/champion/${alias(item)}.png`;
     });
 
     return response;

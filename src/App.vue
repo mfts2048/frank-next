@@ -7,13 +7,14 @@ import { GlobalThemeOverrides } from 'naive-ui';
 // import GameNoFoundVue from './views/gameNoFound.vue';
 
 const router = useRouter();
+const route = useRoute();
 const leagueClientIsRunning = ref(false);
 const tabs = ref('GameRecords');
 
 onMounted(() => {
     ipcRenderer.invoke('check_league_client_is_running').then(res => {
         if (res) {
-            router.push('/software');
+            router.push('/background');
         } else {
             router.push('/welcome');
         }
@@ -49,7 +50,10 @@ const themeOverrides: GlobalThemeOverrides = {
 <template>
     <n-config-provider :theme-overrides="themeOverrides">
         <NMessageProvider placement="bottom-right">
-            <RouterView />
+            <!-- <h1>{{ route.fullPath }}</h1> -->
+            <div class="container">
+                <RouterView />
+            </div>
             <!-- <GameNoFoundVue v-if="!leagueClientIsRunning" /> -->
             <!-- <div class="container">
                 <n-tabs type="line" animated v-model:value="tabs">

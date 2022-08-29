@@ -39,6 +39,10 @@ async function bootstrap(win: BrowserWindow) {
         return await lcuServer.setRunePage(data);
     });
 
+    ipcMain.handle('get_profile_summary', async (event, { puuid }) => {
+        return await lcuServer.getProfileSummary(puuid);
+    });
+
     await createWebsocketLcuEvent(win, lcuServer);
 }
 

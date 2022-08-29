@@ -1,11 +1,18 @@
 <script lang="ts" setup>
 import { ArrowBackOutline } from '@vicons/ionicons5';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const back = () => {
+    router.go(-1);
+};
 </script>
 
 <template>
     <div class="game-layout">
         <div>
-            <n-button strong secondary type="primary">
+            <n-button strong secondary type="primary" @click="back">
                 <template #icon>
                     <n-icon>
                         <ArrowBackOutline />
@@ -21,10 +28,6 @@ import { ArrowBackOutline } from '@vicons/ionicons5';
 </template>
 
 <style lang="less" scoped>
-.game-layout {
-    padding: 24px;
-    box-sizing: border-box;
-}
 .layout-container {
     margin-top: 24px;
 }
