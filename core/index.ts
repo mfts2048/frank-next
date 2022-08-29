@@ -1,10 +1,25 @@
 import { BrowserWindow, ipcMain } from 'electron';
-import { setupLcuServer } from './lcuServer';
-import { CurrentSummoner } from './methods/getCurrentSummoner';
+import { LcuServerCore, setupLcuServer } from './lcuServer';
 import { createWebsocketLcuEvent } from './wsLcuEvent';
+import { CurrentSummoner } from './methods/getCurrentSummoner';
 
 async function bootstrap(win: BrowserWindow) {
-    const lcuServer = await setupLcuServer();
+    let lcuServer: LcuServerCore = await setupLcuServer();
+
+    if (!lcuServer.credentials) {
+        // win.webContents.send('check_league_client_is_running', false);
+
+        ipcMain.handle('check_league_client_is_running', async () => {
+            return false;
+        });
+        return;
+    }
+    // win.webContents.send('check_league_client_is_running', true);
+
+    ipcMain.handle('check_league_client_is_running', async () => {
+        return true;
+    });
+
     let summoner: CurrentSummoner;
 
     ipcMain.handle('get_champion_mastery', (event, { summonerId }) => {

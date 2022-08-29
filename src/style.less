@@ -15,12 +15,46 @@ body {
     font-family: FZBenMoYueYiTiS;
 }
 
+.container-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 .container {
     width: 100%;
     height: 100%;
     -webkit-app-region: drag;
     padding: 10px 24px;
     box-sizing: border-box;
+}
+
+.game-layout {
+    -webkit-app-region: drag;
+    .layout-container {
+        -webkit-app-region: no-drag;
+
+        .describe {
+            flex: 1;
+        }
+
+        .light-green {
+            height: 108px;
+            background-color: rgba(0, 128, 0, 0.12);
+        }
+        .green {
+            height: 108px;
+            background-color: rgba(0, 128, 0, 0.24);
+        }
+    }
+}
+
+.container-error {
+    -webkit-app-region: drag;
+    .n-button {
+        -webkit-app-region: no-drag;
+    }
 }
 
 main,
@@ -43,4 +77,41 @@ main {
 
 .align-center {
     align-items: center;
+}
+
+.w262 {
+    width: 240px;
+}
+
+.w240 {
+    width: 240px;
+}
+
+.w140 {
+    width: 140px;
+}
+
+.w100 {
+    width: 100px;
+}
+
+.w80 {
+    width: 80px;
+}
+
+.w42 {
+    width: 42px;
+}
+
+.t-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ml40 {
+    margin-left: 20px;
+}
+
+.ml20 {
+    margin-left: 20px;
 }

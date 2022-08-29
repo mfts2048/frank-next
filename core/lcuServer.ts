@@ -14,16 +14,17 @@ import { setRunePage } from './methods/setRunePage';
 // import { champDict } from "./static/lolDataList";
 
 export async function setupLcuServer() {
-    const credentials = await credentialsCore.init();
-    if (credentials) {
+    try {
+        const credentials = await credentialsCore.init();
         return new LcuServerCore(credentials);
-    } else {
-        throw new Error('未检测到客户端');
+    } catch(e) {
+        console.log('league client process could not be located')
+        return undefined
     }
 }
 
 export class LcuServerCore {
-    private credentials: Credentials;
+    public credentials: Credentials;
 
     constructor(credentials: Credentials) {
         this.credentials = credentials;
