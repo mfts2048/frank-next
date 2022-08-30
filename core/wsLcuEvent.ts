@@ -4,6 +4,7 @@ import { createWebSocketConnection } from './league-connect';
 import { wssListenConsole } from './utils/console';
 import { translate } from './utils/translate';
 import { throttle } from 'lodash-es';
+import { appSetting } from './constant/setting';
 
 export async function createWebsocketLcuEvent(win: BrowserWindow, lcuServer: LcuServerCore) {
     const ws = await createWebSocketConnection({
@@ -50,18 +51,19 @@ export async function createWebsocketLcuEvent(win: BrowserWindow, lcuServer: Lcu
 
         // 自动接受对局
         if (data === 'ReadyCheck') {
-            lcuServer.acceptMatchmaking();
+            const autoAccept = appSetting.get('autoAccept');
+            if (autoAccept) lcuServer.acceptMatchmaking();
         }
     });
-
-    const autoPick = false;
-    const autoBan = true;
 
     const listenChampSelect = throttle(
         (data: any) => {
             if (!data) return;
 
             wssListenConsole('/lol-champ-select/v1/session');
+
+            const autoPick = appSetting.get('autoPickChampion.championId');
+            const autoBan = appSetting.get('autoBanChampion.championId');
 
             // 原先是二维数组，如果是 5V5 的对战需要比较 25次 拍平之后是 比较 10次（但是拍平也需要性能）
             const actions: any[] = data.actions.flat();

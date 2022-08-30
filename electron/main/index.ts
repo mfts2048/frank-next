@@ -36,6 +36,7 @@ const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(ROOT_PATH.dist, 'index.html');
 
 async function createWindow() {
+    console.log(app.getPath('userData'));
     win = new BrowserWindow({
         title: 'Main window',
         icon: join(ROOT_PATH.public, 'favicon.ico'),

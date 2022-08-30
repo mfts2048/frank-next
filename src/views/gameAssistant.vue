@@ -34,7 +34,7 @@ const getPosition = (pos: string) => {
         case 'aram':
             return '极地';
         default:
-            return '不知道';
+            return '';
     }
 };
 

@@ -23,6 +23,14 @@ const startLeagueClient = () => {
             };
             iptRef.value.click();
         }
+    } else {
+        ipcRenderer.invoke('start_client').then(res => {
+            if (res) {
+                message.success('游戏启动成功');
+            } else {
+                message.error('游戏启动失败，请检查游戏环境是否正确');
+            }
+        })
     }
 };
 
