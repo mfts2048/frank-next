@@ -117,4 +117,50 @@ export async function createWebsocketLcuEvent(win: BrowserWindow, lcuServer: Lcu
     } else {
         res && listenChampSelect(res as any);
     }
+
+    // ================================== 测试
+    // https://lcu.vivide.re/
+    ws.subscribe('/lol-champ-select/v1/bannable-champions', function () {
+        wssListenConsole(`/lol-champ-select/v1/bannable-champions`);
+        console.log(arguments);
+    });
+
+    ws.subscribe('/lol-champ-select/v1/pickable-champions', function () {
+        wssListenConsole(`/lol-champ-select/v1/pickable-champions`);
+        console.log(arguments);
+    });
+
+    // 我的环节
+    // /lol-champ-select/v1/session/my-selection
+
+    // /lol-champions/v1/inventories/{summonerId}/champions/{championId} GET
+
+    // 获取当前选择的英雄
+    // /lol-champ-select/v1/current-champion GET
+
+    // 测试是否可用
+    //  /lol-gameflow/v1/availability
+
+    // 流阶段
+    // /lol-gameflow/v1/gameflow-phase
+
+    // 玩家状态
+    // /lol-gameflow/v1/gameflow-metadata/player-status
+
+    // /lol-gameflow/v1/session/event
+
+    // /lol-gameflow/v1/gameflow-phase
+
+    // Champion - 英雄角色
+    // Summoner -玩家
+    // Rune - 符文
+    // Mastery -天赋
+    // Game / Match - 游戏局、比赛，两词无本质区别
+    // Item - 物品/装备
+    // Team - 战队
+    // League - 排位战区，如：希维尔的狩猎领域039
+    // Spell - 召唤师技能
+    // Event - 事件，如击杀、推塔、杀怪
+    // Point - 事件发生坐标(Sight)
+    // Wards - 视野道具
 }
