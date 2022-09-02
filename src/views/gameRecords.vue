@@ -101,12 +101,10 @@ onMounted(init);
     display: flex;
 
     .left {
-        width: 240px;
+        width: 200px;
         flex-shrink: 0;
 
         .n-card {
-            height: 607px;
-
             .n-list-item {
                 width: 179px;
                 position: relative;
@@ -141,7 +139,7 @@ onMounted(init);
 
     .right {
         flex: 1;
-        padding-left: 24px;
+        padding-left: 12px;
     }
 }
 </style>

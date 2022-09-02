@@ -43,8 +43,8 @@ async function createWindow() {
         show: true,
         frame: false,
         resizable: false,
-        width: 1140,
-        height: 750,
+        width: 840,
+        height: 600,
         webPreferences: {
             preload,
             // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
