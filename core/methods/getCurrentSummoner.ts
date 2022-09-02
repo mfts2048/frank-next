@@ -34,10 +34,12 @@ export interface CurrentSummoner {
 }
 
 export async function getCurrentSummoner() {
+    console.log(123123123123)
     const response = await http1Request<CurrentSummonerResponse>(
         `/lol-summoner/v1/current-summoner`,
         'GET'
     );
+    console.log('---------------')
 
     return {
         displayName: response.displayName, // 玩家昵称

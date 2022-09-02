@@ -31,12 +31,14 @@ async function bootstrap(win: BrowserWindow) {
     });
 
     // 既然无法获取到客户端的任何数据，那么下面就不用执行了
-    if (!lcuServer.credentials) return;
+    // if (!lcuServer.credentials) return;
+    // console.log('？？？')
     nextStep(win, lcuServer);
 }
 
 // 一下方法都是需要在用户成功打开客户端的情况下才能继续执行，保证代码效率
 const nextStep = async (win: BrowserWindow, lcuServer: LcuServerCore) => {
+    console.log(888)
     let summoner: CurrentSummoner;
 
     ipcMain.handle('get_champion_mastery', (event, { summonerId }) => {
@@ -44,7 +46,9 @@ const nextStep = async (win: BrowserWindow, lcuServer: LcuServerCore) => {
     });
 
     ipcMain.handle('get_current_summoner', async () => {
+        console.log(123)
         summoner = await lcuServer.getCurrentSummoner();
+        console.log(789798)
         return summoner;
     });
 

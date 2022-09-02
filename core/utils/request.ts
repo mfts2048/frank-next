@@ -19,6 +19,7 @@ export const http1Request: HttpRequest = async (url, method, body) => {
             },
             credentials
         );
+        console.log('response', response)
 
         return response.json();
     }

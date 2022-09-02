@@ -16,9 +16,11 @@ export const useBackgroundStore = defineStore({
     actions: {
         async getCurrentSummoner(): Promise<Partial<CurrentSummoner>> {
             if (this.summoner && this.summoner.summonerId) {
+                console.log(1)
                 return this.summoner;
             } else {
                 const summoner = await ipcRenderer.invoke('get_current_summoner');
+                console.log(summoner)
                 this.setCurrentSummoner(summoner);
                 return this.summoner;
             }

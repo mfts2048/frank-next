@@ -1,25 +1,26 @@
 <script setup lang="ts">
 import { app, ipcRenderer } from 'electron';
-import { onMounted, reactive, ref, onBeforeMount } from 'vue';
+import { onMounted, computed, ref, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import GameAssistantVue from './views/gameAssistant.vue';
-import { GlobalThemeOverrides } from 'naive-ui';
+import { GlobalThemeOverrides, darkTheme } from 'naive-ui';
 import { RemoveOutline, StopOutline, CloseOutline } from '@vicons/ionicons5';
 import { useApplication } from './store/application';
+import WelcomeVue from './views/welcome.vue';
 // import GameNoFoundVue from './views/gameNoFound.vue';
 
 const router = useRouter();
 const route = useRoute();
 const leagueClientIsRunning = ref(false);
-const tabs = ref('GameRecords');
 const appStore = useApplication();
+const tabs = computed(() => route.path);
 
 onBeforeMount(() => {
     ipcRenderer.invoke('check_league_client_is_running').then(res => {
         if (res) {
-            router.push('/background');
+            leagueClientIsRunning.value = false;
         } else {
-            router.push('/welcome');
+            leagueClientIsRunning.value = true;
         }
     });
 
@@ -29,52 +30,79 @@ onBeforeMount(() => {
 });
 
 const themeOverrides: GlobalThemeOverrides = {
-    common: {
-        // primaryColor: '#FF0000',
-        // textColor2: '#e4f8f2'
-    },
-    Button: {
-        textColor: '#e4f8f2'
-    },
-    Tag: {
-        color: '#EEEEEE00'
-    },
-    Select: {
-        peers: {
-            InternalSelection: {
-                // textColor: '#e4f8f2'
-            }
-        }
+    Tabs: {
+        colorSegment: '#00000000'
     }
+    // common: {
+    //     // primaryColor: '#FF0000',
+    //     // textColor2: '#e4f8f2'
+    // },
+    // Button: {
+    //     textColor: '#e4f8f2'
+    // },
+    // Tag: {
+    //     color: '#EEEEEE00'
+    // },
+    // Select: {
+    //     peers: {
+    //         InternalSelection: {
+    //             // textColor: '#e4f8f2'
+    //         }
+    //     }
+    // }
 };
 
-// const jumpTo = (path: string) => {
-//     tabs.value = path.slice(1);
-//     router.push(path);
-// };
+const jumpTo = (path: string) => {
+    router.push(path);
+    // tabs.value = path;
+};
 </script>
 
 <template>
-    <n-config-provider :theme-overrides="themeOverrides">
+    <n-config-provider :theme="darkTheme" :theme-overrides="themeOverrides">
         <NMessageProvider placement="bottom-right">
-            <div class="app-controls">
-                <n-space :size="0">
-                    <div class="icon">
-                        <n-icon color="#ffffff">
-                            <RemoveOutline />
-                        </n-icon>
+            <n-layout>
+                <n-layout-header>
+                    <div class="header">
+                        <div class="tabs-center">
+                            <n-tabs type="segment" v-model:value="tabs">
+                                <n-tab
+                                    name="/background"
+                                    tab="生涯"
+                                    @click="jumpTo('/background')"
+                                ></n-tab>
+                                <n-tab
+                                    name="/GameRecords"
+                                    tab="对局记录"
+                                    @click="jumpTo('/GameRecords')"
+                                ></n-tab>
+                                <n-tab
+                                    name="/GameSetting"
+                                    tab="设置"
+                                    @click="jumpTo('/GameSetting')"
+                                ></n-tab>
+                            </n-tabs>
+                        </div>
+                        <div class="icon-box">
+                            <div class="icon icon-close">
+                                <n-icon color="#ffffff" :size="20">
+                                    <CloseOutline />
+                                </n-icon>
+                            </div>
+                        </div>
                     </div>
-                    <div class="icon">
-                        <n-icon color="#ffffff" :size="20">
-                            <CloseOutline />
-                        </n-icon>
+                </n-layout-header>
+                <n-layout-content content-style="padding: 24px;height: 549px;">
+                    <div class="container">
+                        <n-scrollbar style="max-height: 501px">
+                            <RouterView />
+                        </n-scrollbar>
                     </div>
-                </n-space>
-            </div>
+                </n-layout-content>
+            </n-layout>
+            <WelcomeVue :show="leagueClientIsRunning" />
+
             <!-- <h1>{{ route.fullPath }}</h1> -->
-            <div class="container">
-                <RouterView />
-            </div>
             <!-- <GameNoFoundVue v-if="!leagueClientIsRunning" /> -->
             <!-- <div class="container">
                 <n-tabs type="line" animated v-model:value="tabs">
