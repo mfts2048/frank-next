@@ -5,6 +5,7 @@ import { wssListenConsole } from './utils/console';
 import { translate } from './utils/translate';
 import { throttle } from 'lodash-es';
 import { appSetting } from './constant/setting';
+import { http1Request } from './utils/request';
 
 export async function createWebsocketLcuEvent(win: BrowserWindow, lcuServer: LcuServerCore) {
     const ws = await createWebSocketConnection({
@@ -62,8 +63,8 @@ export async function createWebsocketLcuEvent(win: BrowserWindow, lcuServer: Lcu
 
             wssListenConsole('/lol-champ-select/v1/session');
 
-            const autoPick = appSetting.get('autoPickChampion.championId');
-            const autoBan = appSetting.get('autoBanChampion.championId');
+            const autoPick: string = appSetting.get('autoPickChampion.championId');
+            const autoBan: string = appSetting.get('autoBanChampion.championId');
 
             // 原先是二维数组，如果是 5V5 的对战需要比较 25次 拍平之后是 比较 10次（但是拍平也需要性能）
             const actions: any[] = data.actions.flat();
@@ -80,7 +81,7 @@ export async function createWebsocketLcuEvent(win: BrowserWindow, lcuServer: Lcu
                     // actionElement.championId === 0   表示召唤师还没有选择英雄
                     // actionElement.completed          表示召唤师还没有确定
                     if (actionElement.championId === 0 && !actionElement.completed && autoPick) {
-                        lcuServer.autoPickChampion('115', actionElement.id.toString());
+                        lcuServer.autoPickChampion(autoPick, actionElement.id.toString());
                         // 处理完之后立即卸载监听
                         ws.unsubscribe('/lol-champ-select/v1/session');
                     } else if (actionElement.championId !== 0 && !actionElement.completed) {
@@ -92,7 +93,7 @@ export async function createWebsocketLcuEvent(win: BrowserWindow, lcuServer: Lcu
                 } else if (actionElement.type === 'ban') {
                     console.log('召唤师 禁用 英雄环节');
                     if (actionElement.championId === 0 && !actionElement.completed && autoBan) {
-                        lcuServer.autoBanChampion('115', actionElement.id.toString());
+                        lcuServer.autoBanChampion(autoBan, actionElement.id.toString());
                     } else if (actionElement.championId !== 0 && !actionElement.completed) {
                         console.log('选择', actionElement.championId);
 
@@ -120,15 +121,15 @@ export async function createWebsocketLcuEvent(win: BrowserWindow, lcuServer: Lcu
 
     // ================================== 测试
     // https://lcu.vivide.re/
-    ws.subscribe('/lol-champ-select/v1/bannable-champions', function () {
-        wssListenConsole(`/lol-champ-select/v1/bannable-champions`);
-        console.log(arguments);
-    });
+    // ws.subscribe('/lol-champ-select/v1/bannable-champions', function () {
+    //     wssListenConsole(`/lol-champ-select/v1/bannable-champions`);
+    //     console.log(1, arguments);
+    // });
 
-    ws.subscribe('/lol-champ-select/v1/pickable-champions', function () {
-        wssListenConsole(`/lol-champ-select/v1/pickable-champions`);
-        console.log(arguments);
-    });
+    // ws.subscribe('/lol-champ-select/v1/pickable-champions', function () {
+    //     wssListenConsole(`/lol-champ-select/v1/pickable-champions`);
+    //     console.log(2, arguments);
+    // });
 
     // 我的环节
     // /lol-champ-select/v1/session/my-selection
@@ -148,8 +149,6 @@ export async function createWebsocketLcuEvent(win: BrowserWindow, lcuServer: Lcu
     // /lol-gameflow/v1/gameflow-metadata/player-status
 
     // /lol-gameflow/v1/session/event
-
-    // /lol-gameflow/v1/gameflow-phase
 
     // Champion - 英雄角色
     // Summoner -玩家

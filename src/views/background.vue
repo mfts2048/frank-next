@@ -148,7 +148,7 @@ onMounted(async () => {
 
 <style lang="less" scoped>
 .background {
-    height: 702px;
+    height: 670px;
     .game-background {
         display: flex;
     }
